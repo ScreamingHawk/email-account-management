@@ -1,4 +1,4 @@
-module.exports.helloWorld = (event, context, callback) =>
+module.exports.handler = (event, context, callback) =>
 	response =
 		statusCode: 200
 		headers:

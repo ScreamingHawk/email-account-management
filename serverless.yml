@@ -1,4 +1,4 @@
-service: ${file(../config.${self:provider.stage}.json):serviceName}
+service: ${file(config.${self:provider.stage}.json):serviceName}
 
 # Where the service will be deployed
 provider:
@@ -6,7 +6,7 @@ provider:
   runtime: nodejs6.10
   stage: ${opt:stage, 'dev'}
   region: ap-southeast-2
-  profile: ${file(../config.${self:provider.stage}.json):awsProfile}
+  profile: ${file(config.${self:provider.stage}.json):awsProfile}
   memorySize: 512
   timeout: 5
 
