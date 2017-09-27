@@ -17,7 +17,6 @@
   },
   "homepage": "https://github.com/ScreamingHawk/email-account-management#readme",
   "devDependencies": {
-    "coffeescript": "^2.0.0",
-    "serverless-coffeescript": "^1.0.0"
+    "coffeescript": "^2.0.0"
   }
 }

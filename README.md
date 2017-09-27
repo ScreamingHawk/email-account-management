@@ -59,6 +59,34 @@ cp config.sample.json config.prod.json
 
 Edit `config.dev.json` and `config.prod.json` with your settings for your development and production environments respectively.
 
+## Build and Deployment
+
+Install dependencies
+
+```
+npm install
+```
+
+Build the coffeescript files
+
+```
+node_modules/.bin/coffee -c .
+```
+
+Deploy the API
+
+```
+serverless deploy
+```
+
+## Test
+
+Test the endpoints with your email address
+
+```
+
+```
+
 ## Credits
 
 [Michael Standen](https://michael.standen.link)

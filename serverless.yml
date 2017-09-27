@@ -11,20 +11,23 @@ provider:
   timeout: 5
 
 package:
+  include:
+    - addEmail.js
+    - confirmEmail.js
+    - deleteEmail.js
   exclude:
-    .git/**
-    .gitignore
-    README.md
-    LICENSE
-    config.*.json
-
-plugins:
-  # Mmm coffeescript
-  - serverless-coffeescript
+    - .git/**
+    - .gitignore
+    - README.md
+    - LICENSE
+    - config.*.json
+    - addEmail.coffee
+    - confirmEmail.coffee
+    - deleteEmail.coffee
 
 # Export some cloud formation information
 resources:
-  Resource:
+  Resources:
     S3Bucket:
       Type: AWS::S3::Bucket
       Properties:
