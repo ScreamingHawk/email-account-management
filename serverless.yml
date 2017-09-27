@@ -12,18 +12,14 @@ provider:
 
 package:
   include:
-    - addEmail.js
-    - confirmEmail.js
-    - deleteEmail.js
+    - handler.js
   exclude:
     - .git/**
     - .gitignore
     - README.md
     - LICENSE
     - config.*.json
-    - addEmail.coffee
-    - confirmEmail.coffee
-    - deleteEmail.coffee
+    - handler.coffee
 
 # Export some cloud formation information
 resources:
@@ -44,7 +40,7 @@ resources:
 # Deployable functions
 functions:
   addEmail:
-    handler: addEmail.handler
+    handler: handler.addEmail
     description: Request to add a users email
     events:
       - http:
@@ -52,7 +48,7 @@ functions:
           method: put
           cors: true
   confirmEmail:
-    handler: confirmEmail.handler
+    handler: handler.confirmEmail
     description: Confirm the email address is valid
     events:
       - http:
@@ -60,7 +56,7 @@ functions:
           method: post
           cors: true
   deleteEmail:
-    handler: deleteEmail.handler
+    handler: handler.deleteEmail
     description: Delete the email address
     events:
       - http:
