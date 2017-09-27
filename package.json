@@ -1,0 +1,23 @@
+{
+  "name": "email-account-management",
+  "version": "1.0.0",
+  "description": "Serverless account management via email",
+  "main": "handler.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ScreamingHawk/email-account-management.git"
+  },
+  "author": "Michael Standen <screaminghawk@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ScreamingHawk/email-account-management/issues"
+  },
+  "homepage": "https://github.com/ScreamingHawk/email-account-management#readme",
+  "devDependencies": {
+    "coffeescript": "^2.0.0",
+    "serverless-coffeescript": "^1.0.0"
+  }
+}

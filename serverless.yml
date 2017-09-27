@@ -1,0 +1,28 @@
+service: email-account-management
+
+# Where the service will be deployed
+provider:
+  name: aws
+  runtime: nodejs6.10
+
+# Configure AWS profile usage
+custom:
+  defaultStage: dev
+  profiles:
+    dev: milkprojects
+    prod: milkprojects
+
+plugins:
+  # Mmm coffeescript
+  - serverless-coffeescript
+
+# The `functions` block defines what code to deploy
+functions:
+  helloWorld:
+    handler: handler.helloWorld
+    # The `events` block defines how to trigger the handler.helloWorld code
+    events:
+      - http:
+          path: hello-world
+          method: get
+          cors: true
