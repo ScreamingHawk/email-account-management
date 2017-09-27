@@ -1,18 +1,22 @@
-service: email-account-management
+service: ${file(../config.${self:provider.stage}.json):serviceName}
 
 # Where the service will be deployed
 provider:
   name: aws
   runtime: nodejs6.10
-  stage: dev
+  stage: ${opt:stage, 'dev'}
   region: ap-southeast-2
-  profile: catfacts #TODO Replace this with your AWS profile
+  profile: ${file(../config.${self:provider.stage}.json):awsProfile}
   memorySize: 512
   timeout: 5
 
 package:
   exclude:
     .git/**
+    .gitignore
+    README.md
+    LICENSE
+    config.*.json
 
 plugins:
   # Mmm coffeescript
@@ -31,32 +35,32 @@ resources:
       Value:
         "Fn::GetAtt": [ S3Bucket, Arn ]
       Export:
-        Name: ${self:service}:${opt:stage}:S3BucketName
+        Name: ${self:service}:${self:provider.stage}:S3BucketName
 
 
 # Deployable functions
 functions:
   addEmail:
-    handler: handler.addEmail
+    handler: addEmail.handler
     description: Request to add a users email
     events:
       - http:
-          path: account
+          path: accounts
           method: put
           cors: true
   confirmEmail:
-    handler: handler.confirmEmail
+    handler: confirmEmail.handler
     description: Confirm the email address is valid
     events:
       - http:
-          path: account
+          path: accounts/confirm
           method: post
           cors: true
   deleteEmail:
-    handler: handler.deleteEmail
+    handler: deleteEmail.handler
     description: Delete the email address
     events:
       - http:
-          path: account
+          path: accounts
           method: delete
           cors: true

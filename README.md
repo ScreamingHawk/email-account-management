@@ -28,16 +28,6 @@ I use [AWS Route53][6] but you can use any registrar.
 6. Copy the records shown into your DNS hosted zones
 7. Refresh the page and your domain should be listed as `Verified`
 
-**Test it worked!**
-
-1. Click on the check box next to your domain
-2. Click `Send a Test Email`
-3. Enter a `From` email prefix. This can be anything, even if there is no associated address
-4. Enter a `To` email address that you have access to
-5. Enter a `Subject`
-6. Click `Send Test Email`
-7. Check your email
-
 #### Email Verification
 
 1. Log in to the [AWS Console][4]
@@ -48,14 +38,26 @@ I use [AWS Route53][6] but you can use any registrar.
 6. Open the email you will receive and click the link provided
 7. Repeat steps 4-6 with another email address
 
-**Test it worked!**
+#### Test Verification Worked
 
 1. Click on the check box next an email address
 2. Click `Send a Test Email`
-3. Enter a `To` email address that you have access to
-4. Enter a `Subject`
-5. Click `Send Test Email`
-6. Check your email
+3. If using a domain: Enter a `From` email prefix. This can be anything, even if there is no associated address
+4. Enter a `To` email address that you have access to
+5. Enter a `Subject`
+6. Click `Send Test Email`
+7. Check your email
+
+### Serverless Configuration
+
+Create configuration files for your development and production environments.
+
+```
+cp config.sample.json config.dev.json
+cp config.sample.json config.prod.json
+```
+
+Edit `config.dev.json` and `config.prod.json` with your settings for your development and production environments respectively.
 
 ## Credits
 

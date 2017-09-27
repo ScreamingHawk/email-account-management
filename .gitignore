@@ -7,3 +7,7 @@ jspm_packages
 
 # Generated Javascript
 *.js
+
+# Configuration
+config.*.json
+!config.sample.json
