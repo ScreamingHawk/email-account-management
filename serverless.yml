@@ -4,25 +4,59 @@ service: email-account-management
 provider:
   name: aws
   runtime: nodejs6.10
+  stage: dev
+  region: ap-southeast-2
+  profile: catfacts #TODO Replace this with your AWS profile
+  memorySize: 512
+  timeout: 5
 
-# Configure AWS profile usage
-custom:
-  defaultStage: dev
-  profiles:
-    dev: milkprojects
-    prod: milkprojects
+package:
+  exclude:
+    .git/**
 
 plugins:
   # Mmm coffeescript
   - serverless-coffeescript
 
-# The `functions` block defines what code to deploy
+# Export some cloud formation information
+resources:
+  Resource:
+    S3Bucket:
+      Type: AWS::S3::Bucket
+      Properties:
+        BucketName: ${self:service}-${self:provider.stage}
+  Outputs:
+    S3BucketName:
+      Description: The ARN for the S3 bucket
+      Value:
+        "Fn::GetAtt": [ S3Bucket, Arn ]
+      Export:
+        Name: ${self:service}:${opt:stage}:S3BucketName
+
+
+# Deployable functions
 functions:
-  helloWorld:
-    handler: handler.helloWorld
-    # The `events` block defines how to trigger the handler.helloWorld code
+  addEmail:
+    handler: handler.addEmail
+    description: Request to add a users email
     events:
       - http:
-          path: hello-world
-          method: get
+          path: account
+          method: put
+          cors: true
+  confirmEmail:
+    handler: handler.confirmEmail
+    description: Confirm the email address is valid
+    events:
+      - http:
+          path: account
+          method: post
+          cors: true
+  deleteEmail:
+    handler: handler.deleteEmail
+    description: Delete the email address
+    events:
+      - http:
+          path: account
+          method: delete
           cors: true
