@@ -6,6 +6,10 @@ bucketName = process.env.bucketName
 awsSesRegion = process.env.awsSesRegion
 sourceEmail = process.env.sourceEmail
 replyToEmail = process.env.replyToEmail ? sourceEmail
+confirmEmailTemplateSubject = process.env.confirmEmailTemplateSubject
+confirmEmailTemplateBodyText = process.env.confirmEmailTemplateBodyText
+confirmEmailTemplateBodyHtml = process.env.confirmEmailTemplateBodyHtml
+serviceEndpoint = process.env.serviceEndpoint
 
 s3 = new AWS.S3()
 ses = new AWS.SES
@@ -80,7 +84,10 @@ module.exports.addEmail = (event, context, lambdaCallback) =>
 			if err?
 				console.log err
 				return respondWith 500, null, "Something unexpected went wrong when adding email", lambdaCallback
-			sendEmail email, "Please confirm your email", "Hello! Please use uuid #{token}", "<u>Hello!</u> Please use uuid <a href=\"this\">#{token}</a>", (err)->
+			url = "#{serviceEndpoint}/accounts/confirm?email=#{email}&token=#{token}"
+			bodyText = confirmEmailTemplateBodyText.replace /{{confirmUrl}}/g, url
+			bodyHtml = confirmEmailTemplateBodyHtml.replace /{{confirmUrl}}/g, url
+			sendEmail email, confirmEmailTemplateSubject, bodyText, bodyHtml, (err)->
 				if err?
 					console.log err
 					return respondWith 500, null, "Something unexpected went wrong when sending email", lambdaCallback

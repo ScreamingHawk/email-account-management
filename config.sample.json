@@ -1,8 +1,15 @@
 {
 	"serviceName": "service-name",
+	"serviceEndpoint": "https://yourdomain.com",
 	"awsProfile": "default",
 	"awsSesArn": "arn:aws:ses:us-east-1:XXXXXXXXXXXX:identity/XXXXXXX.XXX",
 	"awsSesRegion": "us-east-1",
+	"bucketName": "bucket-name",
 	"sourceEmail": "your@email.com",
-	"replyToEmail": "no-reply@email.com"
+	"replyToEmail": "no-reply@email.com",
+	"confirmEmailTemplate": {
+		"subject": "Welcome! Please confirm your email address",
+		"bodyText": "Welcome! Please confirm your email address by pasting this link into your browser: {{confirmUrl}}",
+		"bodyHtml": "<h1>Welcome!</h1><p>Please confirm your email address by <a href='{{confirmUrl}}'>clicking here</a>.</p>"
+	}
 }
