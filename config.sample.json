@@ -1,4 +1,8 @@
 {
-	"serviceName": "email-account-management",
-	"awsProfile": "default"
+	"serviceName": "service-name",
+	"awsProfile": "default",
+	"awsSesArn": "arn:aws:ses:us-east-1:XXXXXXXXXXXX:identity/XXXXXXX.XXX",
+	"awsSesRegion": "us-east-1",
+	"sourceEmail": "your@email.com",
+	"replyToEmail": "no-reply@email.com"
 }

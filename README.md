@@ -84,7 +84,7 @@ serverless deploy
 Test the endpoints with your email address
 
 ```
-
+serverless invoke -f addEmail -d '{"email": "<your_email_here>"}' -l
 ```
 
 ## Credits

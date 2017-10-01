@@ -1,14 +1,43 @@
 service: ${file(config.${self:provider.stage}.json):serviceName}
 
+custom:
+  configFile: config.${self:provider.stage}.json
+  bucketName: ${self:service}-${self:provider.stage}
+  awsSesArn: ${file(${self:custom.configFile}):awsSesArn}
+  awsSesRegion: ${file(${self:custom.configFile}):awsSesRegion}
+
 # Where the service will be deployed
 provider:
   name: aws
   runtime: nodejs6.10
   stage: ${opt:stage, 'dev'}
   region: ap-southeast-2
-  profile: ${file(config.${self:provider.stage}.json):awsProfile}
+  profile: ${file(${self:custom.configFile}):awsProfile}
   memorySize: 512
   timeout: 5
+  environment:
+    stage: ${self:provider.stage}
+    bucketName: ${self:custom.bucketName}
+    awsSesArn: ${self:custom.awsSesArn}
+    awsSesRegion: ${self:custom.awsSesRegion}
+    sourceEmail: ${file(${self:custom.configFile}):sourceEmail}
+    replyToEmail: ${file(${self:custom.configFile}):replyToEmail}
+  iamRoleStatements:
+    - Effect: "Allow"
+      Action:
+        - "s3:GetObject"
+        - "s3:PutObject"
+        - "s3:PutObjectAcl"
+        - "s3:DeleteObject"
+        - "s3:ListBucket" #ListBucket enabled 404 responses for failed GetObject calls
+      Resource:
+        - arn:aws:s3:::${self:custom.bucketName}
+        - arn:aws:s3:::${self:custom.bucketName}/*
+    - Effect: "Allow"
+      Action:
+        - "ses:SendEmail"
+      Resource:
+        - ${self:custom.awsSesArn}
 
 package:
   include:
@@ -27,7 +56,7 @@ resources:
     S3Bucket:
       Type: AWS::S3::Bucket
       Properties:
-        BucketName: ${self:service}-${self:provider.stage}
+        BucketName: ${self:custom.bucketName}
   Outputs:
     S3BucketName:
       Description: The ARN for the S3 bucket

@@ -18,5 +18,9 @@
   "homepage": "https://github.com/ScreamingHawk/email-account-management#readme",
   "devDependencies": {
     "coffeescript": "^2.0.0"
+  },
+  "dependencies": {
+    "aws-sdk": "^2.123.0",
+    "uuid": "^3.1.0"
   }
 }
