@@ -2,30 +2,23 @@ AWS = require 'aws-sdk'
 fs = require 'fs'
 uuidv4 = require 'uuid/v4'
 
-bucketName = process.env.bucketName
-awsSesRegion = process.env.awsSesRegion
-sourceEmail = process.env.sourceEmail
-replyToEmail = process.env.replyToEmail ? sourceEmail
-confirmEmailTemplateSubject = process.env.confirmEmailTemplateSubject
-confirmEmailTemplateBodyText = process.env.confirmEmailTemplateBodyText
-confirmEmailTemplateBodyHtml = process.env.confirmEmailTemplateBodyHtml
-serviceEndpoint = process.env.serviceEndpoint
+config = require "config.#{process.env.stage}.json"
 
 s3 = new AWS.S3()
 ses = new AWS.SES
-	region: awsSesRegion
+	region: config.awsSesRegion
 
 # Get the email data from S3
 getS3 = (email, state, callback) =>
 	params =
-		Bucket: bucketName
+		Bucket: config.bucketName
 		Key: "#{state}/#{email}"
 	s3.getObject params, callback
 
 # Put the email data in S3
 putS3 = (email, state, data, callback) =>
 	params =
-		Bucket: bucketName
+		Bucket: config.bucketName
 		Key: "#{state}/#{email}"
 		Body: data
 	s3.putObject params, callback
@@ -45,9 +38,9 @@ sendEmail = (email, subject, textContent, htmlContent, callback) =>
 					Data: htmlContent
 				Text:
 					Data: textContent
-		Source: sourceEmail
+		Source: config.sourceEmail
 		ReplyToAddresses: [
-			replyToEmail
+			config.replyToEmail ? config.sourceEmail
 		]
 	ses.sendEmail params, callback
 
@@ -84,10 +77,10 @@ module.exports.addEmail = (event, context, lambdaCallback) =>
 			if err?
 				console.log err
 				return respondWith 500, null, "Something unexpected went wrong when adding email", lambdaCallback
-			url = "#{serviceEndpoint}/accounts/confirm?email=#{email}&token=#{token}"
-			bodyText = confirmEmailTemplateBodyText.replace /{{confirmUrl}}/g, url
-			bodyHtml = confirmEmailTemplateBodyHtml.replace /{{confirmUrl}}/g, url
-			sendEmail email, confirmEmailTemplateSubject, bodyText, bodyHtml, (err)->
+			url = "#{config.serviceEndpoint}/accounts/#{email}/confirm?token=#{token}"
+			bodyText = config.confirmEmailTemplate.bodyText.replace /{{confirmUrl}}/g, url
+			bodyHtml = config.confirmEmailTemplate.bodyHtml.replace /{{confirmUrl}}/g, url
+			sendEmail email, config.confirmEmailTemplate.subject, bodyText, bodyHtml, (err)->
 				if err?
 					console.log err
 					return respondWith 500, null, "Something unexpected went wrong when sending email", lambdaCallback

@@ -2,6 +2,7 @@
 	"serviceName": "service-name",
 	"serviceEndpoint": "https://yourdomain.com",
 	"awsProfile": "default",
+	"awsRegion": "ap-southeast-2",
 	"awsSesArn": "arn:aws:ses:us-east-1:XXXXXXXXXXXX:identity/XXXXXXX.XXX",
 	"awsSesRegion": "us-east-1",
 	"bucketName": "bucket-name",
