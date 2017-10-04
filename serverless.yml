@@ -9,8 +9,8 @@ provider:
   stage: ${opt:stage, 'dev'}
   region: ${self:custom.awsRegion}
   profile: ${self:custom.awsProfile}
-  memorySize: 256
-  timeout: 5
+  memorySize: 128
+  timeout: 3
   environment:
     stage: ${self:provider.stage}
   iamRoleStatements:
