@@ -82,11 +82,17 @@ functions:
                 email: true
               querystrings:
                 token: true
-  deleteEmail:
-    handler: handler.deleteEmail
-    description: Delete the email address
+  removeEmail:
+    handler: handler.removeEmail
+    description: Remove the email address
     events:
       - http:
-          path: accounts
+          path: accounts/{email}/remove
           method: get
           cors: true
+          request:
+            parameters:
+              paths:
+                email: true
+              querystrings:
+                token: true

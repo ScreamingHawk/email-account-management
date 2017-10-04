@@ -12,5 +12,9 @@
 		"subject": "Welcome! Please confirm your email address",
 		"bodyText": "Welcome! Please confirm your email address by pasting this link into your browser: {{confirmUrl}}",
 		"bodyHtml": "<h1>Welcome!</h1><p>Please confirm your email address by <a href='{{confirmUrl}}'>clicking here</a>.</p>"
-	}
+	},
+	"confirmSuccessRedirect": "https://yourdomain.com/confirmed",
+	"confirmFailRedirect": "https://yourdomain.com/confirm_failed",
+	"removeSuccessRedirect": "https://yourdomain.com/goodbye",
+	"removeFailRedirect": "https://yourdomain.com/remove_failed"
 }
