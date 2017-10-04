@@ -16,5 +16,6 @@
 	"confirmSuccessRedirect": "https://yourdomain.com/confirmed",
 	"confirmFailRedirect": "https://yourdomain.com/confirm_failed",
 	"removeSuccessRedirect": "https://yourdomain.com/goodbye",
-	"removeFailRedirect": "https://yourdomain.com/remove_failed"
+	"removeFailRedirect": "https://yourdomain.com/remove_failed",
+	"removeRequiresToken": true
 }

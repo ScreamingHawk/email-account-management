@@ -76,6 +76,7 @@ Edit `config.dev.json` and `config.prod.json` with your settings for your develo
 - **confirmFailRedirect**: The URL the user will be redirected to on failed confirmation
 - **removeSuccessRedirect**: The URL the user will be redirected to on successful removal
 - **removeFailRedirect**: The URL the user will be redirected to on failed removal
+- **removeRequiresToken**: Whether or not email removal requires the use of a token to confirm authenticity
 
 ## Build and Deployment
 

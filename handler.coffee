@@ -141,7 +141,7 @@ module.exports.removeEmail = (event, context, lambdaCallback) =>
 		if err?.statusCode == 404
 			return respondWith 404, null, "Email confirmation not completed", lambdaCallback
 
-		if token != String content.Body
+		if config.removeRequiresToken && token != String content.Body
 			console.log "Token provided (#{token}) doesn't match token stored (#{content.Body})"
 			return respondWith 302, "Email removal failed", "Token does not match", lambdaCallback, redirectLocation=config.removeFailRedirect
 
