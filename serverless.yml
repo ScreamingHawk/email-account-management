@@ -95,4 +95,4 @@ functions:
               paths:
                 email: true
               querystrings:
-                token: true
+                token: false

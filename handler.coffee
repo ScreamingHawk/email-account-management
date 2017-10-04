@@ -132,22 +132,31 @@ module.exports.removeEmail = (event, context, lambdaCallback) =>
 	if !event?.email?
 		console.log event
 		return respondWith 400, null, "Email not supplied", lambdaCallback
-	if !event?.token?
+	if config.removeRequiresToken && !event?.token?
 		console.log event
 		return respondWith 400, null, "Confirmation token not supplied", lambdaCallback
 	email = event.email
-	token = event.token
-	getS3 email, "completed", (err, content) ->
-		if err?.statusCode == 404
-			return respondWith 404, null, "Email confirmation not completed", lambdaCallback
 
-		if config.removeRequiresToken && token != String content.Body
-			console.log "Token provided (#{token}) doesn't match token stored (#{content.Body})"
-			return respondWith 302, "Email removal failed", "Token does not match", lambdaCallback, redirectLocation=config.removeFailRedirect
-
-		# Good. Delete it completed
+	removeIt = (email, lambdaCallback) ->
 		deleteS3 email, "completed", (err)->
+			if err?.statusCode == 204
+				console.log err
+				return respondWith 404, "Email removal failed", "Email not found", lambdaCallback, redirectLocation=config.removeFailRedirect
 			if err?
 				console.log err
 				return respondWith 500, null, "Something unexpected went wrong when removing email", lambdaCallback
 			return respondWith 302, "Email removed", null, lambdaCallback, redirectLocation=config.removeSuccessRedirect
+
+	if config.removeRequiresToken
+		# Check the token
+		token = event.token
+		getS3 email, "completed", (err, content) ->
+			if err?.statusCode == 404
+				return respondWith 404, null, "Email confirmation not completed", lambdaCallback
+
+			if token != String content.Body
+				console.log "Token provided (#{token}) doesn't match token stored (#{content.Body})"
+				return respondWith 302, "Email removal failed", "Token does not match", lambdaCallback, redirectLocation=config.removeFailRedirect
+			removeIt email, lambdaCallback
+	else
+		removeIt email, lambdaCallback
