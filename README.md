@@ -59,6 +59,24 @@ cp config.sample.json config.prod.json
 
 Edit `config.dev.json` and `config.prod.json` with your settings for your development and production environments respectively.
 
+- **serviceName**: The name of your service
+- **serviceEndpoint**: The endpoint of your service. This should either be your domain location. If you don't have a domain, you'll have to deploy without this value and then serverless will provide the value for you to redeploy with.
+- **awsProfile**: The profile you have configured your AWS credentials with
+- **awsRegion**: The endpoint and bucket region
+- **awsSesArn**: The ARN for your SES
+- **awsSesRegion**: The region you configured your SES
+- **bucketName**: The name of the bucket to store the emails
+- **sourceEmail**: The source email for the emails sent
+- **replyToEmail**: The reply to email for the emails sent
+- **confirmEmailTemplate**: Template information for the confirmation email
+- - **subject**: The subject line for the confirmation email
+- - **bodyText**: The plain text content for the confirmation email
+- - **bodyHtml**: The HTML rich content for the confirmation email
+- **confirmSuccessRedirect**: The URL the user will be redirected to on successful confirmation
+- **confirmFailRedirect**: The URL the user will be redirected to on failed confirmation
+- **removeSuccessRedirect**: The URL the user will be redirected to on successful removal
+- **removeFailRedirect**: The URL the user will be redirected to on failed removal
+
 ## Build and Deployment
 
 Install dependencies
@@ -81,11 +99,48 @@ serverless deploy
 
 ## Test
 
+
+### Request confirmation of email address
+
 Test the endpoints with your email address
 
 ```
 serverless invoke -f addEmail -d '{\"email\": \"<your_email_here>\"}' -l
 ```
+
+Check you received an email
+
+### Confirm email address
+
+Take the token from the previous command and insert it into the next to test confirming the email address
+
+```
+serverless invoke -f confirmEmail -d '{\"email\": \"<your_email_here>\", \"token\": \"<output_token_here>\"}' -l
+```
+
+*OR*
+
+Test in your browser by following the link in your email
+
+*OR*
+
+Construct the URL using and insert it to your browser as `<your_domain>/accounts/<your_email_here>/confirm?token=<output_token_here>`
+
+### Remove the email address
+
+Take the token from the previous command and insert it into the next to test deleting the email address
+
+```
+serverless invoke -f removeEmail -d '{\"email\": \"<your_email_here>\", \"token\": \"<output_token_here>\"}' -l
+```
+
+*OR*
+
+Test in your browser by following the link in your email
+
+*OR*
+
+Construct the URL using and insert it to your browser as `<your_domain>/accounts/<your_email_here>/remove?token=<output_token_here>`
 
 ## Credits
 
