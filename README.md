@@ -100,7 +100,6 @@ serverless deploy
 
 ## Test
 
-
 ### Request confirmation of email address
 
 Test the endpoints with your email address
@@ -142,6 +141,20 @@ Test in your browser by following the link in your email
 *OR*
 
 Construct the URL using and insert it to your browser as `<your_domain>/accounts/<your_email_here>/remove?token=<output_token_here>`
+
+## Using it
+
+If you got this far down **congratulations**! You're now ready to use your list of subscribed users.
+
+1. Confirmed email subscriptions are located in `<your_bucket>/confirmed` with each file being the confirmed email address
+2. Pending email subscriptions are located in `<your_bucket>/pending` with each file being the confirmed email address
+3. The contents of the file is the token for confirmation (when pending) or deletion (when confirmed)
+
+Simply list the `<your_bucket>/confirmed` contents to get a list of all email addresses.
+
+It's good practice (and a legal requirement in some countries like New Zealand) to include the unsubscribe link in the emails.
+This can be generated in the form `<your_domain>/<service_path>/accounts/<user_email>/remove`.
+If `removeRequiresToken` is enabled, you'll also need to include `?token=<removal_token>`, which can be found in the file for each confirmed email address.
 
 ## Credits
 
