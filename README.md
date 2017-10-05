@@ -8,6 +8,9 @@ This project allows users to manage an *account* or *subscription* via an email 
 
 Leverages the [serverless][0] framework to use [AWS Lambda][1] for server less architecture and [AWS S3][2] for cheap persisted storage.
 
+This project enables management through HTML forms (without JavaScript requirements) and direct links in emails.
+This limitation means only GET and POST calls are allowed which breaks RESTful API conventions.
+
 ## Configuration
 
 ### AWS SES
