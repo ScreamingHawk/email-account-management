@@ -67,10 +67,10 @@ respondWith = (code, body, errMessage, callback, redirectLocation=null) =>
 
 # Request the email address be added
 module.exports.addEmail = (event, context, lambdaCallback) =>
-	if !event?.email?
+	email = event?.email ? event?.pathParameters?.email
+	if !email?
 		console.log event
 		return respondWith 400, null, "Email not supplied", lambdaCallback
-	email = event.email
 	# Check completed only, if pending ignore and reset the request
 	getS3 email, "completed", (err) ->
 		if !err?
@@ -98,14 +98,14 @@ module.exports.addEmail = (event, context, lambdaCallback) =>
 
 # Confirm the email address is valid
 module.exports.confirmEmail = (event, context, lambdaCallback) =>
-	if !event?.email?
+	email = event?.email ? event?.pathParameters?.email
+	if !email?
 		console.log event
 		return respondWith 400, null, "Email not supplied", lambdaCallback
-	if !event?.token?
+	token = event?.token ? event?.queryStringParameters?.token
+	if !token?
 		console.log event
 		return respondWith 400, null, "Confirmation token not supplied", lambdaCallback
-	email = event.email
-	token = event.token
 	getS3 email, "pending", (err, content) ->
 		if err?.statusCode == 404
 			return respondWith 404, null, "Email confirmation not pending", lambdaCallback
@@ -129,13 +129,13 @@ module.exports.confirmEmail = (event, context, lambdaCallback) =>
 
 # Request email removal
 module.exports.removeEmail = (event, context, lambdaCallback) =>
-	if !event?.email?
+	email = event?.email ? event?.pathParameters?.email
+	if !email?
 		console.log event
 		return respondWith 400, null, "Email not supplied", lambdaCallback
 	if config.removeRequiresToken && !event?.token?
 		console.log event
 		return respondWith 400, null, "Confirmation token not supplied", lambdaCallback
-	email = event.email
 
 	removeIt = (email, lambdaCallback) ->
 		deleteS3 email, "completed", (err)->
@@ -149,7 +149,7 @@ module.exports.removeEmail = (event, context, lambdaCallback) =>
 
 	if config.removeRequiresToken
 		# Check the token
-		token = event.token
+		token = event?.token ? event?.queryStringParameters?.token
 		getS3 email, "completed", (err, content) ->
 			if err?.statusCode == 404
 				return respondWith 404, null, "Email confirmation not completed", lambdaCallback
