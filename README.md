@@ -51,6 +51,20 @@ I use [AWS Route53][6] but you can use any registrar.
 6. Click `Send Test Email`
 7. Check your email
 
+#### Leave Sandbox Mode
+
+When you are ready for the real world, you are going to want to be able to send to any email address.
+To do this you need to leave sandbox mode.
+
+1. Sign in to the AWS Console and submit a [SES Sending Limits Increase case][9]
+2. Select your region
+3. Select your expected sending limit (probably `Desired Daily Sending Quota`)
+4. Enter the volume you expect to send. *Note*: This will gradually increase
+5. Enter all the other information, which AWS will use to evaluate your request
+6. Click `Submit`
+
+This can take up to a day to complete.
+
 ### Serverless Configuration
 
 Create configuration files for your development and production environments.
@@ -222,3 +236,4 @@ This software is provided under the [MIT License](https://tldrlegal.com/license/
 [6]: https://aws.amazon.com/route53/
 [7]: https://console.aws.amazon.com/acm/home?region=us-east-1
 [8]: https://console.aws.amazon.com/apigateway/
+[9]: https://aws.amazon.com/ses/extendedaccessrequest/
