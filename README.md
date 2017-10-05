@@ -81,6 +81,54 @@ Edit `config.dev.json` and `config.prod.json` with your settings for your develo
 - **removeFailRedirect**: The URL the user will be redirected to on failed removal
 - **removeRequiresToken**: Whether or not email removal requires the use of a token to confirm authenticity
 
+### Custom Domain Mapping
+
+*Note*: This should be done *after* deployment and testing is successful.
+
+This configuration can be automated in `serverless.yaml`, however as there is an excessive wait time for completion, it may be preferable to do this manually.
+
+#### Create a Certificate
+
+1. Navigate to [AWS Certicate Manager][7] and ensure you are in the **us-east-1** region
+2. Click `Request a certicate`
+3. Enter the desired domain name. *Note*: You can create a wildcard certificate here if you desire
+4. Click `Review and request`
+5. Click `Confirm and request`
+6. The owner of the domain (you?) will receive an email. Follow the instructions in the email to validate the request
+
+#### Add the Certificate to API Gateway
+
+*Note*: This process can take up to 40 minutes to complete.
+
+1. Navigate the [AWS API Gateway][8] in the region you have deployed your API
+2. Select `Custom Domain Names`
+3. Click `Create Custom Domain Name`
+4. Enter the `domain name` you desire
+5. Select the certificate created previously
+6. Enter a `path` if desired
+7. Select the `destination` and `stage` as required
+8. Click `Save`
+9. *Wait a long long time*
+
+Copy the `Target Domain Name` provided for the next step
+
+*Note*: You cannot test hitting this `Target Domain Name` directly, as you will receive a `403 Forbidden` error
+
+#### Configure your DNS
+
+I use [AWS Route53][6] but you can use any registrar.
+
+1. Navigate to [AWS Route53][6]
+2. Select `Hosted zones`
+3. Select your domain
+4. Click `Create Record Set`
+5. Enter the subdomain used in the previous steps
+6. Select `CNAME`
+7. Enter the `Target Domain Name` obtained from the previous steps
+8. Click `Create`
+
+Flush your DNS cache and test
+
 ## Build and Deployment
 
 Install dependencies
@@ -172,3 +220,5 @@ This software is provided under the [MIT License](https://tldrlegal.com/license/
 [4]: console.aws.amazon.com/console/home
 [5]: https://console.aws.amazon.com/ses/
 [6]: https://aws.amazon.com/route53/
+[7]: https://console.aws.amazon.com/acm/home?region=us-east-1
+[8]: https://console.aws.amazon.com/apigateway/
