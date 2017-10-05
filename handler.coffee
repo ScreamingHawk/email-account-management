@@ -1,6 +1,6 @@
 AWS = require 'aws-sdk'
-fs = require 'fs'
 uuidv4 = require 'uuid/v4'
+querystring = require 'querystring'
 
 config = require "config.#{process.env.stage}.json"
 
@@ -67,7 +67,11 @@ respondWith = (code, body, errMessage, callback, redirectLocation=null) =>
 
 # Request the email address be added
 module.exports.addEmail = (event, context, lambdaCallback) =>
-	email = event?.email ? event?.pathParameters?.email
+	email = event?.email
+	if !email? && event?.body?
+		# Try the body
+		email = querystring.parse event.body
+			?.email
 	if !email?
 		console.log event
 		return respondWith 400, null, "Email not supplied", lambdaCallback

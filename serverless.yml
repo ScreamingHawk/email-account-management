@@ -68,6 +68,10 @@ functions:
           path: accounts
           method: post
           cors: true
+          request:
+            parameters:
+              template:
+                application/json: '{ "email" : "$input.params(''email'')" }'
   confirmEmail:
     handler: handler.confirmEmail
     description: Confirm the email address is valid
